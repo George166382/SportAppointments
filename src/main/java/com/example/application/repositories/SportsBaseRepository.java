@@ -1,10 +1,12 @@
-package com.example.application.entities;
+package com.example.application.repositories;
 
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import com.example.application.entities.SportsBase;
 
 public interface SportsBaseRepository extends JpaRepository<SportsBase, Long> {
 

@@ -2,6 +2,8 @@ package com.example.application.entities;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,44 +11,39 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 
 
 @Entity
-@Builder
-public class Admin extends Person {
+@Table(name = "basic_admin")
+@Data
+public class Admin extends Person{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_admin")
+    @Column(name = "ID_ADMIN")
+   
     private Long idAdmin;
     
+   
     @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL)
+   
     private List<SportsBase> basesList;
-
-	public List<SportsBase> getBasesList() {
-		return basesList;
+    
+    
+   public Admin() {
 	}
+	  
 
-
-	public Admin(List<SportsBase> basesList) {
-		this.basesList = basesList;
-	}
-
-	public Long getIdAdmin() {
-		return idAdmin;
-	}
-
-	public void setIdAdmin(Long idAdmin) {
+	public Admin(Long idAdmin) {
 		this.idAdmin = idAdmin;
 	}
-
-
-	public void setBasesList(List<SportsBase> basesList) {
-		this.basesList = basesList;
-	}
-
 
 
 }

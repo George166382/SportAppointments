@@ -9,16 +9,21 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 
 
 
 @Entity
+@Table(name = "basic_user")
+@Data
 public class User extends Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_user")
-   
+    @Column(name = "ID_USER")
     private Long idUser;
     
     
@@ -26,25 +31,13 @@ public class User extends Person {
     		  )
     private List<Appointment> appointmentsList;
     
-    
-
-	public List<Appointment> getAppointmentsList() {
-		return appointmentsList;
+    public User() {
 	}
-
-	public void setAppointmentsList(List<Appointment> appointmentsList) {
-		this.appointmentsList = appointmentsList;
-	}
-
-	public Long getIdUser() {
-		return idUser;
-	}
-
-	public void setIdUser(Long idUser) {
+	
+	public User(Long idUser) {
 		this.idUser = idUser;
 	}
 
-   
     
     
 }

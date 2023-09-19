@@ -15,6 +15,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.example.application.repositories.AdminRepository;
+import com.example.application.repositories.SportsBaseRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -33,12 +35,12 @@ class SportsBaseRepositoryTest {
 	
 	@BeforeEach
 	void beforeEach() {
-	    Admin a = new Admin(new ArrayList<SportsBase>());
+	    Admin a = new Admin();
 	    a.setName("Drango");
 	    a.setEmail("drago@gmail.com");
 	    a.setPassword("drgo");
 
-	    SportsBase sb = new SportsBase(new ArrayList<SportGround>());
+	    SportsBase sb = new SportsBase();
 	    sb.setAdmin(a);
 	    sb.setName("Baza 3");
 	    sb.setAddress("Strada Plopului");

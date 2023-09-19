@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.example.application.repositories.AdminRepository;
+
 @SpringBootTest
 class AdminRepositoryTest {
 
@@ -20,7 +22,7 @@ class AdminRepositoryTest {
 	@BeforeEach
 	void beforeEach()
 	{
-		Admin a = new Admin(List.of());
+		Admin a = new Admin();
 		a.setName("Drango");
 		a.setEmail("drago@gmail.com");
 		a.setPassword("drgo");
