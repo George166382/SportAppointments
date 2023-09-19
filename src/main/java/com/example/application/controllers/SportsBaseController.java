@@ -19,32 +19,32 @@ import com.example.application.services.AdminService;
 import com.example.application.services.SportsBaseService;
 
 @RestController
-@RequestMapping
+@RequestMapping(path = "api/v1/bases")
 public class SportsBaseController {
 
 	@Autowired
 	private SportsBaseService sportsBaseService;
 	
 	
-	@GetMapping(path="api/v1/sportsbase/getbases")
+	@GetMapping
 	public List<SportsBaseDTO> getBases()
 	{
 		return sportsBaseService.getBases();
 	}
 	
-	@PostMapping(path="api/v1/sportsbase/postbases")
+	@PostMapping
 	public void addBase(@RequestBody SportsBase sportsBase)
 	{
 		sportsBaseService.addNewBase(sportsBase);
 	}
 	
-	@PutMapping(path="api/v1/sportsbase/updateBaseAdmin")
+	@PutMapping
 	public void changeAdministratorOfTheBase(@RequestParam(name="adminName") String name, @RequestParam(name="idBase") Long id)
 	{
 		sportsBaseService.changeAdmin(name,id);
 	}
 	
-	@DeleteMapping(path="api/v1/sportsbase/deletebase/{baseId}")
+	@DeleteMapping
 	public void deleteBase(@PathVariable("baseId") Long id)
 	{
 		sportsBaseService.deleteBase(id);

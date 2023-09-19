@@ -20,7 +20,7 @@ import com.example.application.services.AdminService;
 
 
 @RestController
-@RequestMapping
+@RequestMapping(path = "/api/v1/admins")
 public class AdminController {
 
 	@Autowired
@@ -28,25 +28,25 @@ public class AdminController {
 	
 	
 	
-	@GetMapping(path = "/api/v1/admins")
+	@GetMapping
 	  public List<AdminDTO> getAdmins() 
 	  { 
 		  return adminService.getAdmins(); 
 	  }
 	
-	@PostMapping(path = "api/v1/admins/postadmins")
+	@PostMapping
 	 public void createAdmin(@RequestBody Admin admin)
 	 {
 		adminService.createAdmin(admin);
 	 }
 	
-	@PutMapping(path = "api/v1/admins/putadmins")
+	@PutMapping
 	public void updateAdmin(@RequestParam(name="name") String name, @RequestParam(name="id") Long id)
 	{
 		adminService.updateAdmin(name,id);
 	}
 	
-	@DeleteMapping(path = "api/v1/admins/deleteadmins/{adminId}")
+	@DeleteMapping
 	public void deleteAdmin(@PathVariable("adminId") Long id)
 	{
 		adminService.deleteAdmin(id);

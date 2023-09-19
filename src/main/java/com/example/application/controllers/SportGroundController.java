@@ -20,30 +20,30 @@ import com.example.application.services.AdminService;
 import com.example.application.services.SportGroundService;
 
 @RestController
-@RequestMapping
+@RequestMapping(path = "/api/v1/grounds")
 public class SportGroundController {
 
 	@Autowired
 	private SportGroundService sportGroundService;
 	
 		
-	 @GetMapping(path = "api/v1/sg/getsg")
+	 @GetMapping
 	  public List<SportGroundDTO> getSportGrounds() 
 	  { 
 		  return sportGroundService.getSportGrounds(); 
 	  }
 	 
-	  @PostMapping(path = "api/v1/sg/postsg")
+	  @PostMapping
 	  public void addSportGround(@RequestBody SportGround sportGround)
 	  {
 		  sportGroundService.addSportGround(sportGround);
 	  }
-	  @PutMapping(path = "api/v1/sg/updatesg")
+	  @PutMapping
 	  public void updateSportGround(@RequestParam(name="name")String name,@RequestParam(name="idSg")Long id)
 	  {
 		  sportGroundService.updateSportGround(name,id);
 	  }
-	  @DeleteMapping(path = "api/v1/sg/delete/{id}")
+	  @DeleteMapping
 	  public void deleteSportGround(@PathVariable("id") Long id)
 	  {
 		  sportGroundService.deleteSportGround(id);

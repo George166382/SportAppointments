@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.application.controllers.dto.AppointmentDTO;
@@ -16,6 +17,7 @@ import com.example.application.services.AdminService;
 import com.example.application.services.AppointmentService;
 
 @RestController
+@RequestMapping(path = "/api/v1/appointments")
 public class AppointmentController {
 
 	@Autowired
@@ -23,19 +25,19 @@ public class AppointmentController {
 	
 	
 	
-	@GetMapping(path="api/v1/appointments/getappointments")
+	@GetMapping
 	public List<AppointmentDTO> getAppointments()
 	{
 		return appointmentService.getAppointments();
 	}
 	
-	@PostMapping(path="api/v1/appointments/getappointments")
+	@PostMapping
 	public void addAppointment(@RequestBody Appointment appointment)
 	{
 		appointmentService.addAppointment(appointment);
 	}
 	
-	@DeleteMapping(path="api/v1/appointments/getappointments/{id}")
+	@DeleteMapping
 	public void deleteAppointment(@PathVariable("id") Long id)
 	{
 		appointmentService.deleteAppointment(id);

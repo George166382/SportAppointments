@@ -20,7 +20,7 @@ import com.example.application.services.UserService;
 
 
 @RestController
-@RequestMapping
+@RequestMapping(path = "/api/v1/users")
 public class UserController {
 
 	@Autowired
@@ -30,23 +30,23 @@ public class UserController {
 	
 	
 	
-	  @GetMapping(path = "api/v1/users/getusers")
+	  @GetMapping
 	  public List<UserDTO> getUsers() 
 	  { 
 		  return userService.getUsers(); 
 	  }
 	 
-	  @PostMapping(path = "api/v1/users/postusers")
+	  @PostMapping
 	  public void addUser(@RequestBody User user)
 	  {
 		  userService.addUser(user);
 	  }
-	  @PutMapping(path = "api/v1/users/update")
+	  @PutMapping
 	  public void updateUser(@RequestParam(name="email")String email,@RequestParam(name="idUser")Long id)
 	  {
 		  userService.updateUser(email,id);
 	  }
-	  @DeleteMapping(path = "api/v1/users/delete/{id}")
+	  @DeleteMapping
 	  public void deleteUser(@PathVariable("id") Long id)
 	  {
 		  userService.deleteUser(id);
