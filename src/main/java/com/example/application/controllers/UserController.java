@@ -47,7 +47,7 @@ public class UserController {
 		  userService.updateUser(email,id);
 	  }
 	  @DeleteMapping
-	  public void deleteUser(@PathVariable("id") Long id)
+	  public void deleteUser(@RequestParam(name="id") Long id)
 	  {
 		  userService.deleteUser(id);
 	  }

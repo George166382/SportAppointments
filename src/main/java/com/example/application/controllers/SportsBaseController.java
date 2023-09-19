@@ -45,7 +45,7 @@ public class SportsBaseController {
 	}
 	
 	@DeleteMapping
-	public void deleteBase(@PathVariable("baseId") Long id)
+	public void deleteBase(@RequestParam(name="id") Long id)
 	{
 		sportsBaseService.deleteBase(id);
 	}

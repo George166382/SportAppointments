@@ -44,7 +44,7 @@ public class SportGroundController {
 		  sportGroundService.updateSportGround(name,id);
 	  }
 	  @DeleteMapping
-	  public void deleteSportGround(@PathVariable("id") Long id)
+	  public void deleteSportGround(@RequestParam(name="id") Long id)
 	  {
 		  sportGroundService.deleteSportGround(id);
 	  }
