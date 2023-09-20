@@ -20,6 +20,8 @@ public class AdminMapper {
 	{
 		AdminDTO adminDTO = new AdminDTO();
 		adminDTO.setIdAdmin(admin.getIdAdmin());
+		adminDTO.setName(admin.getName());
+		adminDTO.setEmail(admin.getEmail());
 		List<SportsBaseDTO> baseListDTO = new ArrayList<>();
 		for(SportsBase base : admin.getBasesList())
 		{

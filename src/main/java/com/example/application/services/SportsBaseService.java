@@ -83,8 +83,15 @@ public class SportsBaseService {
 			throw new IllegalStateException("This administrator is not in DB or the Sports Base cannot be identified");
 		}
 		SportsBase sBase = optionalSportsBase.get();
+		sBase.getAdmin().getBasesList().remove(sBase);
+		List<SportsBase> bases = optionalAdmin.get().getBasesList();
+		if(bases == null)
+		{
+			bases = new ArrayList<>();
+		}
+		bases.add(sBase);
+		optionalAdmin.get().setBasesList(bases);
 		sBase.setAdmin(optionalAdmin.get());
-		optionalAdmin.get().getBasesList().add(optionalSportsBase.get());
 		adminRepository.save(sBase.getAdmin());
 	}
 

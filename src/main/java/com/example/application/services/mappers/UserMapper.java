@@ -21,6 +21,8 @@ public class UserMapper {
 	{
 		UserDTO userDTO = new UserDTO();
 		userDTO.setIdUser(user.getIdUser());
+		userDTO.setName(user.getName());
+		userDTO.setEmail(user.getEmail());
 		List<AppointmentDTO> appointmentsListDTO = new ArrayList<>();
 		for(Appointment appointment : user.getAppointmentsList())
 		{
