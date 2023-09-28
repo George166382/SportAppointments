@@ -10,7 +10,8 @@ import org.springframework.stereotype.Service;
 import com.example.application.controllers.dto.UserDTO;
 import com.example.application.entities.User;
 import com.example.application.repositories.UserRepository;
-import com.example.application.services.mappers.UserMapper;
+import com.example.application.services.mappers.UserMap;
+
 
 @Service
 public class UserService {
@@ -18,7 +19,7 @@ public class UserService {
 	private UserRepository userRepository;
 	
 	@Autowired
-	private UserMapper userMapper;
+	private UserMap userMapper;
 	
 	
 	

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,7 @@ import com.example.application.controllers.dto.AdminDTO;
 import com.example.application.entities.Admin;
 import com.example.application.entities.User;
 import com.example.application.repositories.AdminRepository;
-import com.example.application.services.mappers.AdminMapper;
+import com.example.application.services.mappers.AdminMap;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -22,8 +23,8 @@ public class AdminService {
 	private AdminRepository adminRepository;
 	
 	@Autowired
-	private AdminMapper adminMapper;
-	
+	private AdminMap mapper;
+	 
 	
 	public List<AdminDTO> getAdmins() 
 	 { 
@@ -31,7 +32,7 @@ public class AdminService {
 		List<AdminDTO> adminListDTO = new ArrayList<AdminDTO>();
 		for(Admin admin: adminsList)
 		{
-			AdminDTO adminDTO = adminMapper.toDTO(admin);
+			AdminDTO adminDTO = mapper.toDTO(admin);
 			adminListDTO.add(adminDTO);
 			
 		}

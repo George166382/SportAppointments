@@ -13,7 +13,8 @@ import com.example.application.entities.SportsBase;
 import com.example.application.entities.User;
 import com.example.application.repositories.SportGroundRepository;
 import com.example.application.repositories.SportsBaseRepository;
-import com.example.application.services.mappers.SportGroundMapper;
+import com.example.application.services.mappers.SportGroundMap;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -25,7 +26,7 @@ public class SportGroundService {
 	@Autowired
 	private SportsBaseRepository sportsBaseRepository;
 	@Autowired
-	private SportGroundMapper groundMapper;
+	private SportGroundMap groundMapper;
 	
 	
 	public List<SportGroundDTO> getSportGrounds() {

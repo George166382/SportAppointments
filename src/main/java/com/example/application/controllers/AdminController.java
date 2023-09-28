@@ -19,7 +19,7 @@ import com.example.application.entities.User;
 import com.example.application.services.AdminService;
 
 
-@RestController
+@RestController 
 @RequestMapping(path = "/api/v1/admins")
 public class AdminController {
 
@@ -27,7 +27,7 @@ public class AdminController {
 	private AdminService adminService;
 	
 	
-	
+	 
 	@GetMapping
 	  public List<AdminDTO> getAdmins() 
 	  { 

@@ -10,7 +10,8 @@ import org.springframework.stereotype.Service;
 import com.example.application.controllers.dto.AppointmentDTO;
 import com.example.application.entities.Appointment;
 import com.example.application.repositories.AppointmentRepository;
-import com.example.application.services.mappers.AppointmentMapper;
+import com.example.application.services.mappers.AppointmentMap;
+
 
 @Service
 public class AppointmentService {
@@ -19,7 +20,7 @@ public class AppointmentService {
 	private AppointmentRepository appointmentRepository;
 	
 	@Autowired
-	private AppointmentMapper appointmentMapper;
+	private AppointmentMap appointmentMapper;
 	
 
 	public List<AppointmentDTO> getAppointments()

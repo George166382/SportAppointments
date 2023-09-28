@@ -19,15 +19,15 @@ import com.example.application.services.AdminService;
 import com.example.application.services.SportsBaseService;
 
 @RestController
-@RequestMapping(path = "api/v1/bases")
+@RequestMapping(path = "/api/v1/bases")
 public class SportsBaseController {
 
 	@Autowired
 	private SportsBaseService sportsBaseService;
-	
+	 
 	
 	@GetMapping
-	public List<SportsBaseDTO> getBases()
+	public List<SportsBaseDTO> getBases() 
 	{
 		return sportsBaseService.getBases();
 	}

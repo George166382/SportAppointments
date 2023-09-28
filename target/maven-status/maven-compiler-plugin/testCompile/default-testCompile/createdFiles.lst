@@ -1,1 +1,3 @@
 com\example\application\ApplicationTests.class
+com\example\application\entities\AdminRepositoryTest.class
+com\example\application\entities\SportsBaseRepositoryTest.class

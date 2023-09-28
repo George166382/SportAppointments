@@ -27,7 +27,7 @@ public class SportGroundController {
 	private SportGroundService sportGroundService;
 	
 		
-	 @GetMapping
+	 @GetMapping 
 	  public List<SportGroundDTO> getSportGrounds() 
 	  { 
 		  return sportGroundService.getSportGrounds(); 

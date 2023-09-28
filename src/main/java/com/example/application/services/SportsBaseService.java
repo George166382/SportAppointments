@@ -13,7 +13,8 @@ import com.example.application.entities.SportGround;
 import com.example.application.entities.SportsBase;
 import com.example.application.repositories.AdminRepository;
 import com.example.application.repositories.SportsBaseRepository;
-import com.example.application.services.mappers.SportsBaseMapper;
+import com.example.application.services.mappers.SportsBaseMap;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -25,7 +26,7 @@ public class SportsBaseService {
 	@Autowired
 	private SportsBaseRepository sportsBaseRepository;
 	@Autowired
-	private SportsBaseMapper baseMapper;
+	private SportsBaseMap baseMapper;
 	
 
 	
@@ -34,6 +35,7 @@ public class SportsBaseService {
 		List<SportsBaseDTO> sportsBaseListDTO = new ArrayList<>();
 		for(SportsBase sportsBase : sportsBaseList)
 		{
+			
 			SportsBaseDTO baseDTO = baseMapper.toDTO(sportsBase);
 			sportsBaseListDTO.add(baseDTO);
 		}

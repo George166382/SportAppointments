@@ -25,8 +25,8 @@ public class AppointmentController {
 	private AppointmentService appointmentService;
 	
 	
-	
-	@GetMapping
+
+	@GetMapping 
 	public List<AppointmentDTO> getAppointments()
 	{
 		return appointmentService.getAppointments();
