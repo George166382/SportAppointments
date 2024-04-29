@@ -9,7 +9,9 @@ import org.springframework.data.repository.query.Param;
 import com.example.application.entities.SportsBase;
 
 public interface SportsBaseRepository extends JpaRepository<SportsBase, Long> {
-
+ 
+	@Query("SELECT s FROM SportsBase s WHERE s.name = :name")
+	public Optional<SportsBase> findByName(@Param("name") String name);
 
 	@Query("SELECT s FROM SportsBase s WHERE s.address = :address")
 	public Optional<SportsBase> findByAddress(@Param("address") String address);

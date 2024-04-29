@@ -30,6 +30,9 @@ public class SportGround {
 	@OneToMany(mappedBy = "sportGround",cascade = CascadeType.ALL)
 	private List<Appointment> appointmentsList;
 	
+	@OneToMany(mappedBy = "sportGround",cascade = CascadeType.ALL)
+	private List<Trainer> trainersList;
+	
 	public SportGround() {
 	}
 

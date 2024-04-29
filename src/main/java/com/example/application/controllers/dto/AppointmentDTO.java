@@ -28,7 +28,9 @@ public class AppointmentDTO {
    
     private SportGroundDTO sportGround;
 
+    private int nop;
    
+    private String trainerName;
     private Date appointmentDate;
 
    

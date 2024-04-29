@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.application.entities.Admin;
+import com.example.application.entities.Person;
 import com.example.application.entities.User;
 
 @Repository

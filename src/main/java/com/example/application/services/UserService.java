@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.application.controllers.dto.UserDTO;
+import com.example.application.entities.Person;
 import com.example.application.entities.User;
 import com.example.application.repositories.UserRepository;
 import com.example.application.services.mappers.UserMap;
@@ -21,28 +22,27 @@ public class UserService {
 	@Autowired
 	private UserMap userMapper;
 	
-	
+
 	
 	 public List<UserDTO> getUsers() 
 	 { 
 		 List<User> users = userRepository.findAll();
 		 List<UserDTO> usersListDTO = new ArrayList<>();
-		 for(User user : users)
+		 for(Person user : users)
 		 {
-			 UserDTO userDTO = userMapper.toDTO(user);
+			 UserDTO userDTO = userMapper.toDTO((User) user);
 			 usersListDTO.add(userDTO);
 		 }
 		 return usersListDTO;
 	 }
 
-
-	public void addUser(User user) {
-		Optional<User> userOptional = userRepository.findByName(user.getName());
+	public void addUser(Person user) {
+		Optional<User> userOptional = userRepository.findByName(((User)user).getName());
 		if(userOptional.isPresent())
 		{
 			throw new IllegalStateException("This user already exists");
 		}
-		userRepository.save(user);
+		userRepository.save((User)user);
 	}
 
 
@@ -52,7 +52,7 @@ public class UserService {
 		{
 			throw new IllegalStateException("This user does not exist");
 		}
-		User user = userOptional.get();
+		User user = (User) userOptional.get();
 		user.setEmail(email);
 		userRepository.save(user);
 		

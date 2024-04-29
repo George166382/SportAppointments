@@ -24,7 +24,7 @@ public interface AppointmentMap {
 		UserDTO userDTO = new UserDTO();
 		userDTO.setIdUser(user.getIdUser());
 		userDTO.setEmail(user.getEmail());
-		userDTO.setName(userDTO.getName());
+		userDTO.setName(user.getName());
 		return userDTO;
 	}
 	@SportGroundToSportGroundDTO

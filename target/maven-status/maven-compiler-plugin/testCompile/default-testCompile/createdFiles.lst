@@ -1,3 +1,6 @@
 com\example\application\ApplicationTests.class
+com\example\application\entities\SportsGroundRepositoryTest.class
 com\example\application\entities\AdminRepositoryTest.class
 com\example\application\entities\SportsBaseRepositoryTest.class
+com\example\application\entities\UserRepositoryTest.class
+com\example\application\entities\AppointmentRepositoryTest.class

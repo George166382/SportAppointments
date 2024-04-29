@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.application.controllers.dto.UserDTO;
+import com.example.application.entities.Person;
 import com.example.application.entities.User;
 import com.example.application.services.AdminService;
 import com.example.application.services.UserService;
@@ -37,7 +38,7 @@ public class UserController {
 	  }
 	 
 	  @PostMapping
-	  public void addUser(@RequestBody User user)
+	  public void addUser(@RequestBody Person user)
 	  {
 		  userService.addUser(user);
 	  }

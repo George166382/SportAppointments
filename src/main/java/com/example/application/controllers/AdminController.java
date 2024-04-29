@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.application.CustomHeaderAuthFilter;
 import com.example.application.controllers.dto.AdminDTO;
 import com.example.application.entities.Admin;
 import com.example.application.entities.User;
@@ -26,7 +27,7 @@ public class AdminController {
 	@Autowired
 	private AdminService adminService;
 	
-	
+
 	 
 	@GetMapping
 	  public List<AdminDTO> getAdmins() 

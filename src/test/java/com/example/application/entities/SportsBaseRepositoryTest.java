@@ -2,8 +2,13 @@ package com.example.application.entities;
 
 
 
-import java.util.ArrayList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Optional;
 
 import org.junit.jupiter.api.AfterEach;
@@ -14,73 +19,52 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import com.example.application.AppConfig;
 import com.example.application.repositories.AdminRepository;
+import com.example.application.repositories.SportGroundRepository;
 import com.example.application.repositories.SportsBaseRepository;
 
 import jakarta.transaction.Transactional;
 
-@Transactional
-@ExtendWith(MockitoExtension.class)
 @SpringBootTest
 class SportsBaseRepositoryTest {
 
+	ApplicationContext factory = new AnnotationConfigApplicationContext(AppConfig.class);
+	SportsBase sportBase = factory.getBean(SportsBase.class);
+	
 	@Autowired
-	SportsBaseRepository underTest;
+	private SportsBaseRepository underTest;
 
-	@Autowired
-	AdminRepository forAdmin;
-	
-	
-	
+	@SuppressWarnings("removal")
 	@BeforeEach
-	void beforeEach() {
-	    Admin a = new Admin();
-	    a.setName("Drango");
-	    a.setEmail("drago@gmail.com");
-	    a.setPassword("drgo");
-
-	    SportsBase sb = new SportsBase();
-	    sb.setAdmin(a);
-	    sb.setName("Baza 3");
-	    sb.setAddress("Strada Plopului");
-	    
-	    a.getBasesList().add(sb);
-
-	    // First, save the Admin entity to the database
-	    forAdmin.save(a);
-
+	void setUp() throws Exception {
+		sportBase.setName("Baza 3");  
+		sportBase.setAddress("Strada Noua");
+		underTest.save(sportBase);
 	}
-
-
-	@Test
-	void testFindByName() {
-		Optional<SportsBase> s = underTest.findByAddress("Strada Plopului");
-		if(s.isPresent())
-		{
-			System.out.println("Yes, it is");
-		}
-		else
-		{
-			throw new IllegalStateException("Not found");
-		}
-	}
-
 	
+	@Test
+	void test1() {
+		Optional<SportsBase> sportBaseCopy = underTest.findByAddress(sportBase.getAddress());
+		System.out.println(sportBase.getAddress());
+		System.out.println(sportBaseCopy.get().getAddress());
+		assertEquals(sportBase.getAddress(), sportBaseCopy.get().getAddress());
+	}
+	
+	@Test
+	void test2() {
+		Optional<SportsBase> sportBaseCopy = underTest.findByName(sportBase.getName());
+		System.out.println(sportBase.getName());
+		System.out.println(sportBaseCopy.get().getName());
+		assertEquals(sportBase.getName(), sportBaseCopy.get().getName());
+	}
+	
+
 	@AfterEach
-	void afterEach()
-	{
-		Optional<SportsBase> s = underTest.findByAddress("Strada Plopului");
-		if(s.isPresent())
-		{
-			SportsBase sb = s.get();
-			Admin a = sb.getAdmin();
-			forAdmin.delete(a);
-			
-		}
-		else
-		{
-			throw new IllegalStateException("Not found");
-		}
+	void tearDown() throws Exception {
+		underTest.delete(sportBase);
 	}
 }

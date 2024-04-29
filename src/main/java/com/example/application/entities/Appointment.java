@@ -31,6 +31,11 @@ public class Appointment {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "sport_ground_id")
     private SportGround sportGround;
+    
+    @Column(name = "nop")
+    private int nop;
+    @Column(name = "trainer_name")
+    private String trainerName;
 
     @Column(name = "appointment_date")
     @Temporal(TemporalType.DATE) 

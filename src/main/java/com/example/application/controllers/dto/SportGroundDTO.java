@@ -23,6 +23,6 @@ public class SportGroundDTO {
     private String name;
     private SportsBaseDTO sportsBase;
     private List<AppointmentDTO> appointmentsList;
-    
+    private List<TrainerDTO> trainersList;
     
 }

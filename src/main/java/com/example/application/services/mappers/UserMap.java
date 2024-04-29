@@ -31,6 +31,7 @@ public interface UserMap {
 		{
 			AppointmentDTO appointmentDTO = new AppointmentDTO();
 			appointmentDTO.setId(appointment.getId());
+			appointmentDTO.setNop(appointment.getNop());
 			appointmentDTO.setAppointmentDate(appointment.getAppointmentDate());
 			appointmentDTO.setAppointmentHour(appointment.getAppointmentHour());
 			dtos.add(appointmentDTO);

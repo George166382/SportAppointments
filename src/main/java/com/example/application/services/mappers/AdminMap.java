@@ -28,21 +28,26 @@ public interface AdminMap {
 	
 	
 	
-	  @BaseListToBaseListDTO public default List<SportsBaseDTO>
-	  map(List<SportsBase> list) { if (list == null) { return null; }
+	@BaseListToBaseListDTO public default List<SportsBaseDTO> map(List<SportsBase> list) 
+	{ 
+		if (list == null) 
+		{ 
+			return null; 
+		}
 	  
-	  List<SportsBaseDTO> result = new ArrayList<>();
+		List<SportsBaseDTO> result = new ArrayList<>();
 	  
-	  for (SportsBase sportsBase : list) { 
+		for (SportsBase sportsBase : list) { 
 		  SportsBaseDTO sportsBaseDTO = new SportsBaseDTO(); 
 		  sportsBaseDTO.setId(sportsBase.getId());
 		  sportsBaseDTO.setAddress(sportsBase.getAddress());
 		  sportsBaseDTO.setName(sportsBase.getName());
 		 // SportsBaseDTO sportsBaseDTO = SportsBaseMap.INSTANCE.toDTO(sportsBase);
 		  result.add(sportsBaseDTO); 
-}
+		}
 	  
-	  return result; }
+	 	return result; 
+	 }
 	 
 	 
 }
