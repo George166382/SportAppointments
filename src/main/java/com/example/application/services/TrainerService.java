@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.application.exceptions.TrainerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,53 +30,28 @@ public class TrainerService {
     private TrainerMap trainerMapper;
 
 
-    public List<TrainerDTO> getAllTrainers() {
+    public List<Trainer> getAllTrainers() {
     	List<Trainer>  trainers = trainerRepository.findAll();
-		List<TrainerDTO> trainersListDTO = new ArrayList<>();
-		for(Trainer trainer : trainers)
-		{
-			TrainerDTO trainerDTO = trainerMapper.toDTO(trainer);
-			trainersListDTO.add(trainerDTO);
-		}
-		return trainersListDTO;
+
+		return trainers;
     }
 
-    public void addTrainer(Trainer trainer) {
+    public Trainer addTrainer(Trainer trainer) throws TrainerException {
     	Optional<Trainer> optionalTrainer = trainerRepository.findByName(trainer.getName());
 	    if (optionalTrainer.isPresent()) {
-	        throw new IllegalStateException("Trainer with this name already exists");
-	    }
-
-	    SportGround sg = trainer.getSportGround();
-	    if(sg == null)
-	    {
-	    	throw new IllegalStateException("Sport Ground is not specified");
+	        throw new TrainerException("Trainer with this name already exists");
 	    }
 	    
-	    Optional<SportGround> optionalSg = sportGroundRepository.findById(sg.getId());
-	    if(!optionalSg.isPresent())
-	    {
-	    	throw new IllegalStateException("Sport Ground does not exist");
+
+	    return  trainerRepository.save(trainer);
+    }
+
+	public void deleteTrainer(Long id) throws TrainerException {
+		boolean exists = trainerRepository.existsById(id);
+	    if (!exists) {
+	        throw new TrainerException("Trainer with id " + id + " does not exist");
 	    }
-	    
-	    sg = optionalSg.get();
-	    List<Trainer> trainersList = sg.getTrainersList();
-
-	    if (trainersList == null) {
-	        trainersList = new ArrayList<>(); 
-	        sg.setTrainersList(trainersList);;
-	    }
-
-	    trainersList.add(trainer);
-	    sg.setTrainersList(trainersList);
-	    sportGroundRepository.save(sg);
-    }
-
-    public void updateTrainer(Long id, Trainer trainer) {
-        // Implement logic to update an existing trainer
-    }
-
-    public void deleteTrainer(Long id) {
-        // Implement logic to delete a trainer
-    }
+	    trainerRepository.deleteById(id);
+	}
+   
 }

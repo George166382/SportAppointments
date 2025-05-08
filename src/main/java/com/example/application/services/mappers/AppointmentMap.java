@@ -1,7 +1,6 @@
 package com.example.application.services.mappers;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.springframework.stereotype.Component;
 
 import com.example.application.controllers.dto.AppointmentDTO;
 import com.example.application.controllers.dto.SportGroundDTO;
@@ -10,26 +9,38 @@ import com.example.application.entities.Appointment;
 import com.example.application.entities.SportGround;
 import com.example.application.entities.User;
 
-@Mapper
-public interface AppointmentMap {
+@Component
+public class AppointmentMap {
 
-	@Mapping(source = "appointment.id", target = "id")
-	@Mapping(source = "appointment.user", target = "user", qualifiedBy = UserToUserDTO.class)
-	@Mapping(source = "appointment.sportGround", target = "sportGround", qualifiedBy = SportGroundToSportGroundDTO.class)
-	public AppointmentDTO toDTO(Appointment appointment);
-	
-	@UserToUserDTO
-	public default UserDTO mapUser(User user)
-	{
+	public AppointmentDTO toDTO(Appointment appointment) {
+		if (appointment == null) {
+			return null;
+		}
+
+		AppointmentDTO appointmentDTO = new AppointmentDTO();
+		appointmentDTO.setId(appointment.getId());
+		appointmentDTO.setUser(mapUser(appointment.getUser()));
+		appointmentDTO.setSportGround(mapSportGround(appointment.getSportGround()));
+		return appointmentDTO;
+	}
+
+	public UserDTO mapUser(User user) {
+		if (user == null) {
+			return null;
+		}
+
 		UserDTO userDTO = new UserDTO();
 		userDTO.setIdUser(user.getIdUser());
 		userDTO.setEmail(user.getEmail());
 		userDTO.setName(user.getName());
 		return userDTO;
 	}
-	@SportGroundToSportGroundDTO
-	public default SportGroundDTO mapSportGround(SportGround sportGround)
-	{
+
+	public SportGroundDTO mapSportGround(SportGround sportGround) {
+		if (sportGround == null) {
+			return null;
+		}
+
 		SportGroundDTO sportGroundDTO = new SportGroundDTO();
 		sportGroundDTO.setId(sportGround.getId());
 		sportGroundDTO.setName(sportGround.getName());

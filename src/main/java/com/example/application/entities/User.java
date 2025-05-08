@@ -19,7 +19,8 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "basic_user")
-@Data
+@Getter
+@Setter
 public class User extends Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,7 +39,9 @@ public class User extends Person {
 		this.idUser = idUser;
 	}
 
-    
-    
+
+    public User(String email, String s) {
+        super();
+    }
 }
 

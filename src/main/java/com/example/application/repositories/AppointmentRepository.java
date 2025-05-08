@@ -12,6 +12,9 @@ import com.example.application.entities.Appointment;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
-	@Query("SELECT a FROM Appointment a WHERE a.appointmentDate = :date AND a.appointmentHour = :hour")
-	public Optional<Appointment> findByDateHour( @Param("date" ) Date date, @Param("hour") Time hour);
+    @Query("SELECT a FROM Appointment a WHERE a.appointmentDate = :date AND a.appointmentHour = :hour")
+    Optional<Appointment> findByDateHour(@Param("date") Date date, @Param("hour") Time hour);
+
+    @Query("SELECT COUNT(a) FROM Appointment a WHERE a.appointmentDate = :date AND a.appointmentHour = :hour")
+    long countByDateHour(@Param("date") Date date, @Param("hour") Time hour);
 }

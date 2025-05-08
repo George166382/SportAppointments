@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.application.exceptions.SportGroundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,68 +30,52 @@ public class SportGroundService {
 	private SportGroundMap groundMapper;
 	
 	
-	public List<SportGroundDTO> getSportGrounds() {
+	public List<SportGround> getSportGrounds() {
 		List<SportGround> grounds = sportGroundRepository.findAll();
-		List<SportGroundDTO> groundsListDTO = new ArrayList<>();
-		for(SportGround sportGround : grounds)
-		{
-			SportGroundDTO groundDTO = groundMapper.toDTO(sportGround);
-			groundsListDTO.add(groundDTO);
-		}
-		return groundsListDTO;
+
+		return grounds;
 	}
 
-	public void addSportGround(SportGround sportGround) {
-	    Optional<SportGround> optionalSportGround = sportGroundRepository.findByName(sportGround.getName());
-	    if (optionalSportGround.isPresent()) {
-	        throw new IllegalStateException("Sport ground with this name already exists");
-	    }
-
-	    SportsBase sb = sportGround.getSportsBase();
-	    if(sb == null)
-	    {
-	    	throw new IllegalStateException("Sports Base is not specified");
-	    }
-	    
-	    Optional<SportsBase> optionalSb = sportsBaseRepository.findById(sb.getId());
-	    if(!optionalSb.isPresent())
-	    {
-	    	throw new IllegalStateException("Sports Base does not exist");
-	    }
-	    
-	    sb = optionalSb.get();
-	    List<SportGround> groundsList = sb.getGroundsList();
-
-	    if (groundsList == null) {
-	        groundsList = new ArrayList<>(); 
-	        sb.setGroundsList(groundsList);
-	    }
-
-	    groundsList.add(sportGround);
-	    sb.setGroundsList(groundsList);
-	    sportsBaseRepository.save(sb);
-	}
-
-	public void updateSportGround(String name, Long id) {
+	public SportGround getSportGround(Long id) {
 		Optional<SportGround> optionalSportGround = sportGroundRepository.findById(id);
 		if(!optionalSportGround.isPresent())
 		{
-			throw new IllegalStateException("Sport ground not found");
+			throw new IllegalStateException("This sport ground does not exist");
 		}
-		SportsBase sb = optionalSportGround.get().getSportsBase();
-		sb.getGroundsList().remove(optionalSportGround.get());
+		SportGround sportGround = optionalSportGround.get();
+
+		return sportGround;
+	}
+
+	public SportGround addSportGround(SportGround sportGround) throws SportGroundException{
+	    Optional<SportGround> optionalSportGround = sportGroundRepository.findByName(sportGround.getName());
+	    if (optionalSportGround.isPresent() && sportGround.getName().equals(optionalSportGround.get().getName()))  {
+	        throw new SportGroundException("Sport ground with this name already exists");
+	    }
+
+	    
+
+	    return sportGroundRepository.save(sportGround);
+	}
+
+	public SportGround updateSportGround(String name, Long id) throws SportGroundException{
+		Optional<SportGround> optionalSportGround = sportGroundRepository.findById(id);
+		if(!optionalSportGround.isPresent())
+		{
+			throw new SportGroundException("Sport ground not found");
+		}
+
 		SportGround sg = optionalSportGround.get();
 		sg.setName(name);
-		sb.getGroundsList().add(sg);
-		sportsBaseRepository.save(sb);
+		return sportGroundRepository.save(sg);
 		
 	}
 
-	public void deleteSportGround(Long id) {
+	public void deleteSportGround(Long id) throws SportGroundException {
 		Optional<SportGround> optionalSportGround = sportGroundRepository.findById(id);
 		if(!optionalSportGround.isPresent())
 		{
-			throw new IllegalStateException("This sport ground not found");
+			throw new SportGroundException("This sport ground not found");
 		}
 		sportGroundRepository.deleteById(id);
 	}

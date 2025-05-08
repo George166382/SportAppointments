@@ -1,6 +1,10 @@
-D:\eu\EclipseProj\application\src\test\java\com\example\application\entities\AppointmentRepositoryTest.java
-D:\eu\EclipseProj\application\src\test\java\com\example\application\entities\SportsGroundRepositoryTest.java
-D:\eu\EclipseProj\application\src\test\java\com\example\application\entities\SportsBaseRepositoryTest.java
-D:\eu\EclipseProj\application\src\test\java\com\example\application\entities\UserRepositoryTest.java
-D:\eu\EclipseProj\application\src\test\java\com\example\application\entities\AdminRepositoryTest.java
-D:\eu\EclipseProj\application\src\test\java\com\example\application\ApplicationTests.java
+D:\projs\faculta\SportAppointment\application\src\test\java\com\example\application\ApplicationTests.java
+D:\projs\faculta\SportAppointment\application\src\test\java\com\example\application\endpoints\AppointmentControllerTest.java
+D:\projs\faculta\SportAppointment\application\src\test\java\com\example\application\endpoints\SportsBaseControllerTest.java
+D:\projs\faculta\SportAppointment\application\src\test\java\com\example\application\endpoints\SportsGroundControllerTest.java
+D:\projs\faculta\SportAppointment\application\src\test\java\com\example\application\endpoints\TrainerControllerTest.java
+D:\projs\faculta\SportAppointment\application\src\test\java\com\example\application\entities\AdminRepositoryTest.java
+D:\projs\faculta\SportAppointment\application\src\test\java\com\example\application\entities\AppointmentRepositoryTest.java
+D:\projs\faculta\SportAppointment\application\src\test\java\com\example\application\entities\SportsBaseRepositoryTest.java
+D:\projs\faculta\SportAppointment\application\src\test\java\com\example\application\entities\SportsGroundRepositoryTest.java
+D:\projs\faculta\SportAppointment\application\src\test\java\com\example\application\entities\UserRepositoryTest.java

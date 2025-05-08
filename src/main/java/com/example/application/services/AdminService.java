@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.mapstruct.Mapper;
+
+import com.example.application.exceptions.AdminException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,62 +20,58 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Service
 public class AdminService {
 
-	@Autowired
 	private AdminRepository adminRepository;
-	
-	@Autowired
 	private AdminMap mapper;
-	 
+
+	@Autowired
+	public AdminService (AdminRepository adminRepository, AdminMap mapper) {
+		this.adminRepository = adminRepository;
+		this.mapper = mapper;
+	}
 	
-	public List<AdminDTO> getAdmins() 
+	public List<Admin> getAdmins()
 	 { 
 		List<Admin> adminsList = adminRepository.findAll();
-		List<AdminDTO> adminListDTO = new ArrayList<AdminDTO>();
-		for(Admin admin: adminsList)
-		{
-			AdminDTO adminDTO = mapper.toDTO(admin);
-			adminListDTO.add(adminDTO);
-			
-		}
-		 return adminListDTO; 
+
+		 return adminsList;
 	 }
-	public void createAdmin(Admin admin) {
+	public void createAdmin(Admin admin) throws AdminException {
 		
 		Optional<Admin> obj = adminRepository.findByName(admin.getName());
 		
 		if(obj.isPresent())
 		{
-			throw new IllegalStateException("Already exists");
+			throw new AdminException("Already exists");
 		}
 		
 		adminRepository.save(admin);
 		
 	}
-	public void updateAdmin(String name, Long id) {
-		// TODO Auto-generated method stub
+	public void updateAdmin(String name, Long id) throws AdminException {
+
 		Optional<Admin> obj = adminRepository.findById(id);
 		
 		if(!obj.isPresent())
 		{
-			throw new IllegalStateException("Student not found");
+			throw new AdminException("Admin not found");
 		}
 		
 		obj = adminRepository.findByName(name);
 		if(obj.isPresent())
 		{
-			throw new IllegalStateException("This name already exists");
+			throw new AdminException("This name already exists");
 		}
 		
 		adminRepository.updateAdmin(name,id);
 		
 	}
-	public void deleteAdmin(Long id) {
-		// TODO Auto-generated method stub
+	public void deleteAdmin(Long id) throws AdminException{
+
 		Optional<Admin> obj = adminRepository.findById(id);
 		
 		if(!obj.isPresent())
 		{
-			throw new IllegalStateException("Student not found");
+			throw new AdminException("Admin not found");
 		}
 		
 		adminRepository.deleteById(id);

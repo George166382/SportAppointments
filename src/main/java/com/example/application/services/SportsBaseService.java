@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.application.exceptions.SportsBaseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,59 +31,30 @@ public class SportsBaseService {
 	
 
 	
-	public List<SportsBaseDTO> getBases() {
+	public List<SportsBase> getBases() {
 		List<SportsBase> sportsBaseList = sportsBaseRepository.findAll();
-		List<SportsBaseDTO> sportsBaseListDTO = new ArrayList<>();
-		for(SportsBase sportsBase : sportsBaseList)
-		{
-			
-			SportsBaseDTO baseDTO = baseMapper.toDTO(sportsBase);
-			sportsBaseListDTO.add(baseDTO);
-		}
-		return sportsBaseListDTO;
+
+		return sportsBaseList;
 	}
 
-	public void addNewBase(SportsBase sportsBase) {
+	public SportsBase addNewBase(SportsBase sportsBase) throws SportsBaseException {
 		
 		Optional<SportsBase> optionalSportsBase = sportsBaseRepository.findByAddress(sportsBase.getAddress());
 
-		// Check if sportsBase is already present
+		
 		if (optionalSportsBase.isPresent()) {
-		    throw new IllegalStateException("This base already exists");
+		    throw new SportsBaseException("This base already exists");
 		}
 
-		// Check if admin is not null
-		Admin admin = sportsBase.getAdmin();
-		if (admin == null) {
-		    throw new IllegalStateException("Admin is not specified");
-		}
-
-		Optional<Admin> optionalAdmin = adminRepository.findById(admin.getIdAdmin());
-
-		// Check if admin exists
-		if (!optionalAdmin.isPresent()) {
-		    throw new IllegalStateException("This admin doesn't exist");
-		}
-
-		 admin = optionalAdmin.get();
-		 List<SportsBase> basesList = admin.getBasesList();
-
-		    if (basesList == null) {
-		        basesList = new ArrayList<>(); 
-		        admin.setBasesList(basesList);;
-		    }
-
-		    basesList.add(sportsBase);
-		    admin.setBasesList(basesList);
-		 adminRepository.save(admin);
+		 return sportsBaseRepository.save(sportsBase);
 	}
 
-	public void changeAdmin(String name, Long id) {
+	public void changeAdmin(String name, Long id) throws SportsBaseException{
 		Optional<Admin> optionalAdmin = adminRepository.findByName(name);
 		Optional<SportsBase> optionalSportsBase = sportsBaseRepository.findById(id);
-		if(!optionalAdmin.isPresent()||!optionalSportsBase.isPresent())
+		if(!optionalSportsBase.isPresent())
 		{
-			throw new IllegalStateException("This administrator is not in DB or the Sports Base cannot be identified");
+			throw new SportsBaseException("Sports Base cannot be identified");
 		}
 		SportsBase sBase = optionalSportsBase.get();
 		sBase.getAdmin().getBasesList().remove(sBase);
@@ -97,11 +69,11 @@ public class SportsBaseService {
 		adminRepository.save(sBase.getAdmin());
 	}
 
-	public void deleteBase(Long id) {
+	public void deleteBase(Long id) throws SportsBaseException{
 		Optional<SportsBase> optionalSportsBase = sportsBaseRepository.findById(id);
 		if(!optionalSportsBase.isPresent())
 		{
-			throw new IllegalStateException("This sports base cannot be found");
+			throw new SportsBaseException("This sports base cannot be found");
 		}
 		sportsBaseRepository.deleteById(id);
 	}

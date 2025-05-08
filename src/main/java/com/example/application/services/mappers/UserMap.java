@@ -3,32 +3,34 @@ package com.example.application.services.mappers;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.springframework.stereotype.Component;
 
 import com.example.application.controllers.dto.AppointmentDTO;
 import com.example.application.controllers.dto.UserDTO;
 import com.example.application.entities.Appointment;
 import com.example.application.entities.User;
 
-@Mapper
-public interface UserMap {
+@Component
+public class UserMap {
 
-	@Mapping(source = "user.idUser", target = "idUser")
-	@Mapping(source = "user.appointmentsList", target = "appointmentsList", qualifiedBy = AppointmentListToAppointmentListDTO.class)
-	public UserDTO toDTO(User user);
-	
-	@AppointmentListToAppointmentListDTO
-	public default List<AppointmentDTO> mapAppointments(List<Appointment> list)
-	{
-		if(list == null)
-		{
+	public UserDTO toDTO(User user) {
+		if (user == null) {
 			return null;
 		}
-		
+
+		UserDTO userDTO = new UserDTO();
+		userDTO.setIdUser(user.getIdUser());
+		userDTO.setAppointmentsList(mapAppointments(user.getAppointmentsList()));
+		return userDTO;
+	}
+
+	public List<AppointmentDTO> mapAppointments(List<Appointment> list) {
+		if (list == null) {
+			return null;
+		}
+
 		List<AppointmentDTO> dtos = new ArrayList<>();
-		for(Appointment appointment : list)
-		{
+		for (Appointment appointment : list) {
 			AppointmentDTO appointmentDTO = new AppointmentDTO();
 			appointmentDTO.setId(appointment.getId());
 			appointmentDTO.setNop(appointment.getNop());

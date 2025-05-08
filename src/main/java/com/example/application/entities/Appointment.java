@@ -12,23 +12,26 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.sql.Date; // Use java.sql.Date for DATE type
 import java.sql.Time; // Use java.sql.Time for TIME type
 
+@Getter
+@Setter
 @Entity
 @Table(name = "appointment")
-@Data
 public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "sport_ground_id")
     private SportGround sportGround;
     

@@ -23,7 +23,7 @@ public class UserService {
 	private UserMap userMapper;
 	
 
-	
+
 	 public List<UserDTO> getUsers() 
 	 { 
 		 List<User> users = userRepository.findAll();
@@ -36,6 +36,15 @@ public class UserService {
 		 return usersListDTO;
 	 }
 
+	 public User getUser(Long id) {
+		 Optional<User> userOptional = userRepository.findById(id);
+		 if(!userOptional.isPresent())
+		 {
+			 throw new IllegalStateException("This user does not exist");
+		 }
+		 User user = userOptional.get();;
+		 return user;
+	 }
 	public void addUser(Person user) {
 		Optional<User> userOptional = userRepository.findByName(((User)user).getName());
 		if(userOptional.isPresent())

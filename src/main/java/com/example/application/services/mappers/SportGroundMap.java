@@ -3,8 +3,7 @@ package com.example.application.services.mappers;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.springframework.stereotype.Component;
 
 import com.example.application.controllers.dto.AppointmentDTO;
 import com.example.application.controllers.dto.SportGroundDTO;
@@ -15,26 +14,29 @@ import com.example.application.entities.SportGround;
 import com.example.application.entities.SportsBase;
 import com.example.application.entities.Trainer;
 
-@Mapper
-public interface SportGroundMap {
+@Component
+public class SportGroundMap {
 
-	@Mapping(source = "sportGround.id", target = "id")
-    @Mapping(source = "sportGround.sportsBase", target = "sportsBase", qualifiedBy = SportsBaseToSportsBaseDTO.class)
-    @Mapping(source = "sportGround.appointmentsList", target = "appointmentsList", qualifiedBy = AppointmentListToAppointmentListDTO.class)
-    @Mapping(source = "sportGround.trainersList", target = "trainersList", qualifiedBy = TrainerListToTrainerListDTO.class)
-    public SportGroundDTO toDTO(SportGround sportGround);
-	
-	@AppointmentListToAppointmentListDTO
-	public default List<AppointmentDTO> mapAppointments(List<Appointment> list)
-	{
-		if(list == null)
-		{
+	public static SportGroundDTO toDTO(SportGround sportGround) {
+		if (sportGround == null) {
 			return null;
 		}
-		
+
+		SportGroundDTO sportGroundDTO = new SportGroundDTO();
+		sportGroundDTO.setId(sportGround.getId());
+		sportGroundDTO.setSportsBase(mapSportsBase(sportGround.getSportsBase()));
+		sportGroundDTO.setAppointmentsList(mapAppointments(sportGround.getAppointmentsList()));
+		sportGroundDTO.setTrainersList(mapTrainers(sportGround.getTrainersList()));
+		return sportGroundDTO;
+	}
+
+	public static List<AppointmentDTO> mapAppointments(List<Appointment> list) {
+		if (list == null) {
+			return null;
+		}
+
 		List<AppointmentDTO> dtos = new ArrayList<>();
-		for(Appointment appointment : list)
-		{
+		for (Appointment appointment : list) {
 			AppointmentDTO appointmentDTO = new AppointmentDTO();
 			appointmentDTO.setId(appointment.getId());
 			appointmentDTO.setNop(appointment.getNop());
@@ -45,33 +47,29 @@ public interface SportGroundMap {
 		}
 		return dtos;
 	}
-	
-	@SportsBaseToSportsBaseDTO
-	public default SportsBaseDTO mapSportsBase(SportsBase sportsBase)
-	{
+
+	public static SportsBaseDTO mapSportsBase(SportsBase sportsBase) {
+		if (sportsBase == null) {
+			return null;
+		}
+
 		SportsBaseDTO sportsBaseDTO = new SportsBaseDTO();
 		sportsBaseDTO.setAddress(sportsBase.getAddress());
 		sportsBaseDTO.setId(sportsBase.getId());
 		sportsBaseDTO.setName(sportsBase.getName());
 		return sportsBaseDTO;
 	}
-	
-	
-	@TrainerListToTrainerListDTO
-	public default List<TrainerDTO> mapTrainers(List<Trainer> list)
-	{
-		if(list == null)
-		{
+
+	public static List<TrainerDTO> mapTrainers(List<Trainer> list) {
+		if (list == null) {
 			return null;
 		}
-		
+
 		List<TrainerDTO> dtos = new ArrayList<>();
-		for(Trainer trainer : list)
-		{
+		for (Trainer trainer : list) {
 			TrainerDTO trainerDTO = new TrainerDTO();
 			trainerDTO.setId(trainer.getId());
 			trainerDTO.setName(trainer.getName());
-			//trainerDTO.setAvailabilityList(trainer.getAvailabilityList());
 			dtos.add(trainerDTO);
 		}
 		return dtos;

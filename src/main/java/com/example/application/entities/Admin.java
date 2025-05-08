@@ -22,9 +22,10 @@ import lombok.Setter;
 
 
 
+@Getter
+@Setter
 @Entity
 @Table(name = "basic_admin")
-@Data
 public class Admin extends Person{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

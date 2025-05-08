@@ -1,7 +1,11 @@
 package com.example.application.services;
 
+import java.sql.Date;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.application.controllers.dto.TrainerAvailabilityDTO;
 import com.example.application.controllers.dto.TrainerDTO;
+import com.example.application.entities.Appointment;
 import com.example.application.entities.SportGround;
 import com.example.application.entities.Trainer;
 import com.example.application.entities.TrainerAvailability;
@@ -30,21 +35,17 @@ public class AvailabilityService {
     private TrainerAvailabilityMap availabilityMapper;
 	
     
-	public List<TrainerAvailabilityDTO> getAllAvailabilities() {
+	public List<TrainerAvailability> getAllAvailabilities() {
     	List<TrainerAvailability>  availabilities = availabilityRepository.findAll();
-		List<TrainerAvailabilityDTO> availabilityDTOs = new ArrayList<>();
-		for(TrainerAvailability availability : availabilities)
-		{
-			TrainerAvailabilityDTO availabilityDTO = availabilityMapper.toDTO(availability);
-			availabilityDTOs.add(availabilityDTO);
-		}
-		return availabilityDTOs;
+
+		return availabilities;
     }
 
     public void addAvailability(TrainerAvailability availability) {
-    	Optional<TrainerAvailability> optionalAvail = availabilityRepository.findById(availability.getId());
+    	Optional<TrainerAvailability> optionalAvail = availabilityRepository.findByDateHour(availability.getAvailableDate(), availability.getAvailableHour());
+		//System.out.println(optionalAvail.get().getId());
 	    if (optionalAvail.isPresent()) {
-	        throw new IllegalStateException("Trainer with this name already exists");
+	        throw new IllegalStateException("Availability already exists");
 	    }
 
 	    Trainer tr = availability.getTrainer();
@@ -66,17 +67,19 @@ public class AvailabilityService {
 	        availList = new ArrayList<>(); 
 	        tr.setAvailabilityList(availList);
 	    }
-
+	
 	    availList.add(availability);
 	    tr.setAvailabilityList(availList);;
 	    trainerRepository.save(tr);
     }
 
- /*   public void updateTrainer(Long id, Trainer trainer) {
-        // Implement logic to update an existing trainer
-    }
-
-    public void deleteTrainer(Long id) {
-        // Implement logic to delete a trainer
-    } */
+ 
+    public void deleteAvailability(Long id) {
+        Optional<TrainerAvailability> optionalAvailability = availabilityRepository.findById(id);
+		if(!optionalAvailability.isPresent())
+		{
+			throw new IllegalStateException("Availability does not exist");
+		}
+		availabilityRepository.deleteById(id);
+    } 
 }

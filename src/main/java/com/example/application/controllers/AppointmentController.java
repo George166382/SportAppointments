@@ -5,10 +5,15 @@ import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
+import com.example.application.exceptions.AppointmentException;
+import com.example.application.services.mappers.AppointmentMap;
+import com.example.application.services.mappers.SportGroundMap;
+import com.example.application.services.mappers.UserMap;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,8 +32,7 @@ import com.example.application.controllers.dto.AppointmentDTO2;
 import com.example.application.entities.Appointment;
 import com.example.application.entities.SportGround;
 import com.example.application.entities.User;
-import com.example.application.exceptions.SportGroundNotFoundException;
-import com.example.application.exceptions.UserNotFoundException;
+
 import com.example.application.repositories.SportGroundRepository;
 import com.example.application.repositories.UserRepository;
 import com.example.application.services.AdminService;
@@ -42,41 +46,59 @@ public class AppointmentController {
 	@Autowired
 	private AppointmentService appointmentService;
 
+    @Autowired
+    private AppointmentMap appointmentMap;
+
+    @Autowired
+    private UserMap userMap;
+
+    @Autowired
+    private SportGroundMap sportGroundMap;
+
 	@GetMapping 
-	public List<AppointmentDTO> getAppointments()
+	public ResponseEntity<List<AppointmentDTO>> getAppointments()
 	{
-		return appointmentService.getAppointments();
+            List<Appointment> appointments = appointmentService.getAppointments();
+            if (appointments.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            List<AppointmentDTO> appointmentDTOs = new ArrayList<>();
+            for (Appointment appointment : appointments) {
+                AppointmentDTO appointmentDTO = appointmentMap.toDTO(appointment);
+                appointmentDTOs.add(appointmentDTO);
+            }
+            return new ResponseEntity<>(appointmentDTOs, HttpStatus.OK);
+
 	}
 	
 	@PostMapping( consumes = "application/json", produces = "application/json")
-    public ResponseEntity<?> addAppointment(@RequestBody AppointmentDTO2 appointmentDTO) {
+    public ResponseEntity<?> addAppointment(@RequestBody Appointment appointment) {
         try {
-            appointmentService.createAppointment(appointmentDTO);
-            Appointment appointment = appointmentService.getAppointment();
+
             appointmentService.addAppointment(appointment);
             System.out.println(appointment.getUser().getName());
-            return ResponseEntity.ok("Appointment created successfully");
+            return new ResponseEntity<>("Appointment added successfully", HttpStatus.CREATED);
 
         }
-        catch (UserNotFoundException e) {
-            // Log the stack trace for debugging; remove before going to production for security
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-        }
-        catch (SportGroundNotFoundException e) {
-            // Log the stack trace for debugging; remove before going to production for security
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Sport ground not found");
-        }
-        catch (Exception e) {
-            // Log the stack trace for debugging; remove before going to production for security
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error occurred");
+        catch (AppointmentException e) {
+
+            if (e.getMessage().equals("Appointment with these dates already exists")) {
+                return new ResponseEntity<>(e.toString(), HttpStatus.CONFLICT);
+            }
+            return new ResponseEntity<>(e.toString(), HttpStatus.BAD_REQUEST);
+
         }
     }
 	@DeleteMapping
-	public void deleteAppointment(@RequestParam(name="id") Long id)
+	public ResponseEntity<String> deleteAppointment(@RequestParam(name="id") Long id)
 	{
-		appointmentService.deleteAppointment(id);
+        try {
+            appointmentService.deleteAppointment(id);
+            return new ResponseEntity<>("Sport ground deleted successfully", HttpStatus.NO_CONTENT);
+        }
+		catch (AppointmentException e)
+        {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
 	}
 }

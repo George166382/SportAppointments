@@ -1,8 +1,12 @@
 package com.example.application.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.example.application.services.mappers.TrainerMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,11 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.application.controllers.dto.TrainerAvailabilityDTO;
-import com.example.application.controllers.dto.TrainerDTO;
-import com.example.application.entities.Trainer;
 import com.example.application.entities.TrainerAvailability;
 import com.example.application.services.AvailabilityService;
-import com.example.application.services.TrainerService;
 
 @RestController
 @RequestMapping("/api/v1/availability")
@@ -27,24 +28,48 @@ public class TrainerAvailabilityController {
     @Autowired
     private AvailabilityService availabilityService;
 
+    @Autowired
+    private TrainerMap trainerMap;
+
     @GetMapping
-    public List<TrainerAvailabilityDTO> getAllAvailabilities() {
-        return availabilityService.getAllAvailabilities();
-    }
-    
-    
-    @PostMapping
-    public void addAvailability(@RequestBody TrainerAvailability availability) {
-        availabilityService.addAvailability(availability);
+    public ResponseEntity<List<TrainerAvailabilityDTO>> getAllAvailabilities() {
+
+            List<TrainerAvailability> availabilities = availabilityService.getAllAvailabilities();
+            if (availabilities.isEmpty())
+            {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            List<TrainerAvailabilityDTO> availabilityDTOS = new ArrayList<>();
+            for (TrainerAvailability availability : availabilities)
+            {
+                TrainerAvailabilityDTO availabilityDTO = new TrainerAvailabilityDTO();
+                availabilityDTO.setAvailableHour(availability.getAvailableHour());
+                availabilityDTO.setAvailableDate(availability.getAvailableDate());
+                availabilityDTO.setTrainer(trainerMap.toDTO(availability.getTrainer()));
+                availabilityDTOS.add(availabilityDTO);
+            }
+
+            return new ResponseEntity<>(availabilityDTOS, HttpStatus.OK);
+
     }
 
- /*   @PutMapping("/{id}")
-    public void updateTrainer(@PathVariable Long id, @RequestBody Trainer trainer) {
-        availabilityService.updateTrainer(id, trainer);
+    @PostMapping
+    public ResponseEntity<String> addAvailability(@RequestBody TrainerAvailability availability) {
+        try {
+            availabilityService.addAvailability(availability);
+            return new ResponseEntity<>("Availability added successfully", HttpStatus.CREATED);
+        } catch (IllegalStateException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping("/{id}")
-    public void deleteTrainer(@PathVariable Long id) {
-        availabilityService.deleteTrainer(id);
-    } */
+    public ResponseEntity<String> deleteAvailability(@PathVariable Long id) {
+        try {
+            availabilityService.deleteAvailability(id);
+            return new ResponseEntity<>("Availability deleted successfully", HttpStatus.NO_CONTENT);
+        } catch (IllegalStateException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
 }

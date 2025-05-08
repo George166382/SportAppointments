@@ -2,6 +2,8 @@ package com.example.application.entities;
 
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import jakarta.persistence.CascadeType;
@@ -18,7 +20,8 @@ import lombok.Data;
 
 
 @Entity
-@Data
+@Getter
+@Setter
 public class SportsBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

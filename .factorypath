@@ -1,5 +1,0 @@
-<factorypath>
-    <factorypathentry kind="PLUGIN" id="org.eclipse.jst.ws.annotations.core" enabled="true" runInBatchMode="false"/>
-    <factorypathentry kind="EXTJAR" id="C:\Users\G\.eclipse\org.eclipse.oomph.p2\cache\https___mapstruct.org_eclipse_artifacts.jar" enabled="true" runInBatchMode="false"/>
-    <factorypathentry kind="EXTJAR" id="C:\Users\G\.eclipse\org.eclipse.oomph.p2\cache\https___mapstruct.org_eclipse_content.jar" enabled="true" runInBatchMode="false"/>
-</factorypath>

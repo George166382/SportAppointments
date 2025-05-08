@@ -3,10 +3,7 @@ package com.example.application.services.mappers;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
-import org.mapstruct.factory.Mappers;
+import org.springframework.stereotype.Component;
 
 import com.example.application.controllers.dto.AdminDTO;
 import com.example.application.controllers.dto.SportGroundDTO;
@@ -15,44 +12,45 @@ import com.example.application.entities.Admin;
 import com.example.application.entities.SportGround;
 import com.example.application.entities.SportsBase;
 
-@Mapper
-public interface SportsBaseMap{
+@Component
+public class SportsBaseMap {
 
-	
-	@Mapping(source = "sportsBase.id", target = "id")
-	@Mapping(source = "sportsBase.groundsList", target = "groundsList", qualifiedBy = GroundListToGroundListDTO.class)
-	@Mapping(source = "sportsBase.admin", target = "admin", qualifiedBy = AdminToAdminDTO.class)
-	public SportsBaseDTO toDTO(SportsBase sportsBase);
-	
-	
-	@GroundListToGroundListDTO
-	public default List<SportGroundDTO> mapGrounds(List<SportGround> list)
-	{
-		if(list == null)
-		{
+	public static SportsBaseDTO toDTO(SportsBase sportsBase) {
+		if (sportsBase == null) {
 			return null;
 		}
-		
-		List<SportGroundDTO> dtos = new ArrayList<SportGroundDTO>();
-		
-		for(SportGround ground : list)
-		{
+
+		SportsBaseDTO sportsBaseDTO = new SportsBaseDTO();
+		sportsBaseDTO.setId(sportsBase.getId());
+		sportsBaseDTO.setGroundsList(mapGrounds(sportsBase.getGroundsList()));
+		sportsBaseDTO.setAdmin(mapAdmin(sportsBase.getAdmin()));
+		return sportsBaseDTO;
+	}
+
+	public static List<SportGroundDTO> mapGrounds(List<SportGround> list) {
+		if (list == null) {
+			return null;
+		}
+
+		List<SportGroundDTO> dtos = new ArrayList<>();
+		for (SportGround ground : list) {
 			SportGroundDTO sportGroundDTO = new SportGroundDTO();
 			sportGroundDTO.setId(ground.getId());
 			sportGroundDTO.setName(ground.getName());
 			dtos.add(sportGroundDTO);
 		}
-		
 		return dtos;
 	}
-	
-	@AdminToAdminDTO
-	public default AdminDTO mapAdmin(Admin admin)
-	{
+
+	public static AdminDTO mapAdmin(Admin admin) {
+		if (admin == null) {
+			return null;
+		}
+
 		AdminDTO adminDTO = new AdminDTO();
 		adminDTO.setIdAdmin(admin.getIdAdmin());
 		adminDTO.setEmail(admin.getEmail());
+		adminDTO.setName(admin.getName());
 		return adminDTO;
 	}
-	 
 }
